@@ -1,0 +1,6 @@
+/data/
+# latex output
+*.aux
+*.log
+*.out
+*.pdf
