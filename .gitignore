@@ -1,8 +1,20 @@
+# don't commit the steam reviews dataset
 /data/
 # latex output
 *.aux
 *.log
 *.out
 *.pdf
+
+# stupid mac files
 .DS_Store
+
+# personal setup for vim
 /.vim/
+
+# generated when transformers api pulls model from huggingface-hub 
+/huggingface-hub/
+cardiffnlp/
+
+# manual ipy notebook saves, only i need this
+/.ipynb_checkpoints
