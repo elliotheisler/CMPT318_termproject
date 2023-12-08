@@ -10,7 +10,7 @@
 .DS_Store
 
 # personal setup for vim
-/.vim/
+/.exrc/
 
 # generated when transformers api pulls model from huggingface-hub 
 /huggingface-hub/
