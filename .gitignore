@@ -1,5 +1,6 @@
 # don't commit the steam reviews dataset
-/data/
+/data/train_gr/
+/data/test_gr/
 # latex output
 *.aux
 *.log
