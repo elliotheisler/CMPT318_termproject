@@ -19,3 +19,5 @@ cardiffnlp/
 
 # manual ipy notebook saves, only i need this
 /.ipynb_checkpoints
+
+results/*.png

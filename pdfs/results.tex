@@ -113,7 +113,7 @@
 %%
 %% The "title" command has an optional parameter,
 %% allowing the author to define a "short title" to be used in page headers.
-\title{CMPT 318 Project Methods}
+\title{CMPT 318 Project Results}
 
 %%
 %% The "author" command and its associated commands are used to define
@@ -262,20 +262,52 @@
 %% information and builds the first part of the formatted document.
 \maketitle
 
-\section{Section}
-\subsection{Subsection}
-\begin{displaymath}
-  \frac{True Positives}{True Positives + False Positives}
-\end{displaymath}
+\section{Hyperparameter study}
+A grid search of 5 hyperparameters was conducted.
+
+\begin{description}
+  \item[selection] Use sentiment readings from either the beginning, middle, or end
+    of the tokenized steam reviews. Has values \verb|('left', 'middle', 'right')| in
+    the code, respectiely
+  \item[k] number of columns to use in \verb|SelKBest()|. \verb|(5, 2)| were checked
+    for k as well as using all of the 10 relevant columns.
+  \item[C, gamma, and kernel] These are used directly as parameters to the grid search of SVC. Values \verb|(1, 10, 0.1)|, \verb|('scale', 'auto')|, and \verb|('linear', 'rbf', 'sigmoid')| were checked, respectively.
+\end{description}
+
+\section {Main Results}
+With the precision varying only between 0.87 and 0.88, I cannot say that I achieved a
+high precision, but I can discuss what parameters affected results in the grid search
+the most. As far as \verb|selection|, selecting the rightmost tokens performed slightly better than middle on average, and left performed significantly worse. The case was similar for kernel selection. \verb|rbf| performed slightly better than \verb|linear|, and \verb|sigmoid| much
+worse than both. The \verb|C| parameter seemed to increase maximum performance attained slightly linearly for my chosen values of 0.1, 1, and 10. It makes sense that a larger C would allow better performance, if the correlation between sentiments and \verb|['user_suggestion']| is smooth and not noisy. Finally, the \verb|k| in \verb|SelKBest| did not affect performance much. This was to be expected since the non-sentiment columns are hardly even correlated
+with \verb|[user_suggestion]|. In the end, the most accurate and precise classifiers
+used an \verb|rbf| kernel and sentiment readings from the final 512 tokens.
+
+\section{Roadblocks}
+There is one main roadblock worth mentioning. While running sentiment analysis, I discovered that the twitter transformer and most huggingface transformers only support 512-token inputs, too small for roughly half of the reviews. After some
+research, I found out that selected only a substring of tokens is a valid solution and
+that selecting the beginning, middle, or end can have different results. Supposedly
+for long paragraphs or essay-like documents, selecting the end tokens yields more
+accurate sentiment readings since that is where the concluding remarks are found. This
+seemed to prove true as is shown in the figures.
+
 
 
 \section{}
-
-% \begin{figure*}[h]
-%   \centering
-%   \includegraphics[width=0.8\linewidth]{dataset.png}
-%   \caption{Dataset after 178 entries removed, and additional columns parsed}
-%   \Description{steam reviews dataset before and after post-processing}
-% \end{figure*}
+\begin{figure*}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{pdfs/pngs/dataset.png}
+  \caption{Dataset: The dataset was unchanged.}
+  \Description{steam reviews dataset before and after post-processing}
+\end{figure*}
+\begin{figure*}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{results/final_results.png}
+  \caption{Results: Confusion matrices of classifiers with the best and worst precisions}
+\end{figure*}
+\begin{figure*}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{results/additional_results.png}
+  \caption{Additional Results: Boxplots showing means of classifier accuracies accross the different hyperparameters}
+\end{figure*}
 \end{document}
 \endinput
